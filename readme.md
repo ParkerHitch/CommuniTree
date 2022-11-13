@@ -7,6 +7,7 @@ Run `npm install` to install required packages
 Run `npm start` to start server
 
 Connect to `http:/localhost:3000` and login as one of the following existing users!
+- Jeffe
 - Larry
 - Barry
 - Looky
