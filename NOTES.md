@@ -1,6 +1,4 @@
-http://192.168.0.120:3000/
-https://devpost.com/software/501049/joins/sVm1wNJLsHPv-rDAGN8QHA
-
+# Planning
 # tools and frameworks
 - node
 - three.js
