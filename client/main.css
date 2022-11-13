@@ -115,6 +115,15 @@ p {
     padding-top: 1rem;
     padding-left: 0.5rem;
 }
+.top-right{
+    height:3rem;
+    width: 3rem;
+    position: fixed;
+    right:0;
+    top:0;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
 .calendar{
     position: relative;
     font-weight: bold;

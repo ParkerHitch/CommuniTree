@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false , limit:'50mb'}));
 
 // parse application/json
 app.use(bodyParser.json());
@@ -61,11 +61,12 @@ app.post("/api/post/photo/user/:username", function(req, res) {
     for(let i in users){
         let user = users[i];
         if(user.name == req.params.username){
-            fs.unlink("./database/images/"+user.lastImage, function (err) {
-                users[i].lastImage = req.params.username+withHyphens+'.jpg';
-                users[i].location[0] = parseFloat(req.body["location[]"][0])
-                users[i].location[1] = parseFloat(req.body["location[]"][1]);
-            });
+            users[i].lastImage = req.params.username+withHyphens+'.jpg';
+            users[i].location[0] = parseFloat(req.body["location[]"][0])
+            users[i].location[1] = parseFloat(req.body["location[]"][1]);
+            console.log(users[i].imagePosted);
+            users[i].imagePosted[users[i].imagePosted.length-1] = true;
+            console.log(users[i].imagePosted);
         }
     }
     let data = JSON.stringify(users);

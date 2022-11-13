@@ -130,7 +130,7 @@ $(function(){
         $("#chal-txt").append(data.challenges[dayDiff]);
         setTimeout(function() {
             $(".chal-container").css("height","5rem");
-        },5000);
+        },3000);
     });
 });
 
@@ -181,10 +181,10 @@ $("#upload-photo").click(function (){
     }
     $("#cameraPopup").css("display","none");
     video.srcObject = null;
-    // navigator.geolocation.getCurrentPosition(function(pos) {
-    //     $.post("/api/post/photo/user/" + username,
-    //         {"location": [pos.coords.latitude, pos.coords.longitude], "img": image_data_url});
-    // });
+    navigator.geolocation.getCurrentPosition(function(pos) {
+        $.post("/api/post/photo/user/" + username,
+            {"location": [pos.coords.latitude, pos.coords.longitude], "img": image_data_url});
+    });
 });
 $("#retake-photo").click(function (){
     let hidden = $('.hidden');
