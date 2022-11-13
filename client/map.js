@@ -61,32 +61,32 @@ export function loadMap(clientUsername, userData) {
 
     for (let user of userData) {
         if (user.imagePosted[user.imagePosted.length - 1]) {
-            // user already posted today
+            let userCoords = new THREE.Vector2(user.location[1], user.location[0]) // reverse lat and long so x comes first
+            let markerPos = coordsToWorld(userCoords);
+
+            let collider = new THREE.Mesh(colSphereGeometry, colSphereMaterial);
+            collider.position.set(markerPos.x, markerHeight, markerPos.y);
+            markerParent.add(collider);
+
+            collider.targetScale = 1;
+            collider.currentScale = 1;
+            collider.targetRotSpeed = 0.7;
+            collider.currentRotSpeed = 0.7;
+            collider.hovering = false;
+
+            collider.clicked = false;
+            collider.defaultPos = new THREE.Vector3(markerPos.x, markerHeight, markerPos.y);
+
+            const tex = loader.load("api/images/" + user.lastImage)
+            let mat = new THREE.MeshBasicMaterial({
+                map: tex,
+                side: THREE.DoubleSide,
+            });
+            let marker = new THREE.Mesh(markerGeometry, mat);
+            collider.add(marker);
         }
 
-        let userCoords = new THREE.Vector2(user.location[1], user.location[0]) // reverse lat and long so x comes first
-        let markerPos = coordsToWorld(userCoords);
 
-        let collider = new THREE.Mesh(colSphereGeometry, colSphereMaterial);
-        collider.position.set(markerPos.x, markerHeight, markerPos.y);
-        markerParent.add(collider);
-
-        collider.targetScale = 1;
-        collider.currentScale = 1;
-        collider.targetRotSpeed = 0.7;
-        collider.currentRotSpeed = 0.7;
-        collider.hovering = false;
-
-        collider.clicked = false;
-        collider.defaultPos = new THREE.Vector3(markerPos.x, markerHeight, markerPos.y);
-
-        const tex = loader.load("api/images/" + user.lastImage)
-        let mat = new THREE.MeshBasicMaterial({
-            map: tex,
-            side: THREE.DoubleSide,
-        });
-        let marker = new THREE.Mesh(markerGeometry, mat);
-        collider.add(marker);
     }
 
     // User input
@@ -280,8 +280,10 @@ function coordsToWorld(coords) {
 
 export function setCamDestination(username) {
     let user = userDataDict[username];
-    let userCoords = new THREE.Vector2(user.location[1], user.location[0]);
-    camDestination = coordsToWorld(userCoords).add(new THREE.Vector2(0, 3));
+    if (user.imagePosted[user.imagePosted.length - 1]) {
+        let userCoords = new THREE.Vector2(user.location[1], user.location[0]);
+        camDestination = coordsToWorld(userCoords).add(new THREE.Vector2(0, 3));
+    }
 }
 
 function vecToString(v) {

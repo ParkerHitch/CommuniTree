@@ -1,8 +1,9 @@
 {
-  "startDate": {"m": 11, "d": 11, "y" :  2022},
+  "startDate": {"m": 11, "d": 10, "y" :  2022},
   "challenges": [
     "Pick up 3 pieces of litter",
     "Bundle up! Turn your heat down 4 degrees",
-    "Ride share! Take public transit or carpool to work today"
+    "Ride share! Take public transit or carpool to work today",
+    "Choose to recycle a plastic, paper or aluminum product."
   ]
 }
