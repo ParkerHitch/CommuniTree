@@ -1,3 +1,9 @@
+# How to see it
+
+## Go to the following link
+
+[http://breitnw.duckdns.org:3000](http://breitnw.duckdns.org:3000)
+
 ## Instructions for testing this yourself
 
 Download code and open the terminal to the root directory
