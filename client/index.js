@@ -3,10 +3,7 @@ import {loadMap, setCamDestination} from "./map.js";
 const tinderSvg1 = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 123 123\"><path fill=\"url(#"
 const tinderSvg2 = ")\" d=\"M31.5 49.6C55 41.5 59 20.4 56 1c0-.7.6-1.2 1.2-1C79.7 11 105 35 105 71c0 27.6-21.4 52-52.5 52a50 50 0 0 1-28.2-92.7c.6-.4 1.4 0 1.4.7.3 3.7 1.3 13 5.4 18.6h.4z\"/></svg>"
 
-function addHighlights(cal){
-
-}
-
+//CREATES TAG DIV WITH STYLES AND STUFF
 function generateTag(user){
     let streakNum = 0;
     let streakColor = "";
@@ -60,9 +57,11 @@ $(function(){
 
             let postedToday = user.imagePosted[user.imagePosted.length-1];
 
+            //USER YOU ARE LOGGED IN AS
             if(user.name === username){
                 loggedIn = true;
                 const now = new Date();
+                //GENERATE CALENDAR DATES
                 for(let i= -6; i<0; i++){
                     let then = new Date(now.getTime()+i*(1000 * 3600 * 24));
                     let gotIt = false;
@@ -77,6 +76,7 @@ $(function(){
                         highlights.push(false)
                     }
                 }
+                //LAST DATE IS SPECIAL BC OF CAMERA ICON
                 $(".calendar").append("<span class='day last-container' id='cal-"+6+"'><div class='last-num'>" + now.getDate() + "</div></span>");
                 $(".cam-container").appendTo(".last-container");
                 if(postedToday) {
@@ -86,6 +86,7 @@ $(function(){
                     $(".last-num").css("font-size","0");
                     highlights.push(false);
                 }
+                //ADD GREEN HIGHLIGHTS
                 let i=0;
                 while(i<highlights.length){
                     let d = 0;
@@ -109,12 +110,14 @@ $(function(){
                 continue;
             }
 
+            //IF USER IS NOT THE ONE YOU'RE LOGGED IN AS
             $(".bottom-bar").append(generateTag(user));
         }
+        //MAKE SURE YOU ENTERED A VALID LOGIN
         if(!loggedIn){
             window.location.href = "/login";
         }
-
+        //ZOOM TO PIC
         $(".profile-card").click(function (){
             let username = $(this).attr("data-user");
             setCamDestination(username);
@@ -122,6 +125,7 @@ $(function(){
 
         loadMap(username, data)
     });
+    //PUT CHALLENGE IN LITTLE DROPDOWN THING BELOW CALENDAR
     $.getJSON("/api/challenges.json", function (data) {
         const startDate = new Date(data.startDate.y,data.startDate.m-1,data.startDate.d);
         const now = new Date();
@@ -134,6 +138,7 @@ $(function(){
     });
 });
 
+//OPEN CAMERA
 $(".cam-container").click(async function (){
     $("#cameraPopup").css("display","block");
     let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
@@ -148,7 +153,7 @@ $(".cam-container").click(async function (){
 let video = document.querySelector("#video");
 let click_button = document.querySelector("#click-photo");
 let canvas = document.querySelector("#canvas");
-
+//TAKE PHOTO
 click_button.addEventListener('click', function() {
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
     let hidden = $('.hidden');
@@ -156,15 +161,17 @@ click_button.addEventListener('click', function() {
     hidden.addClass('shown').removeClass('hidden');
     shown.addClass('hidden').removeClass('shown');
 });
-
+//UPLOAD PHOTO
 $("#upload-photo").click(function (){
     let image_data_url = canvas.toDataURL('image/jpeg').replace(/^data:image\/jpeg;base64,/, "");
+    //ANIMATE CAMERA ICON
     console.log("sending request: "+"/api/post/photo/user/"+username)
     $(".cam-svg").css("height","0");
     setTimeout(function(){
         $(".cam-container").css("display","none");
     }, 1000);
     $(".last-num").css("font-size","inherit");
+    //STUFF FOR ANIMATING HIGHLIGHT ONTO LAST DAY
     if(highlights[5]){
         let i = 5;
         while(i>0 && highlights[i-1])
